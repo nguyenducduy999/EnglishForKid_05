@@ -7,4 +7,6 @@ package com.framgia.englishforkid.util;
  * Usage: determine values which are constant in project
  */
 public class Constant {
+    public final static String URL_BASE = "https://learnenglishkids.britishcouncil.org/en/";
 }
+
