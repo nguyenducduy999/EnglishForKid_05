@@ -18,23 +18,18 @@ public class EnglishForKidProvider extends ContentProvider {
     public static final String PROVIDER_NAME = "com.framgia.EnglishForKidProvider";
     public static final String URL_DATA_BASE = "content://" + PROVIDER_NAME + "/datas";
     public static final Uri CONTENT_URI = Uri.parse(URL_DATA_BASE);
-
     public static final int URI_CODE = 1;
     public static final int URI_CODE_ID = 2;
-
     public static final UriMatcher sUriMatcher;
-    private SQLiteDatabase mDatabase;
     static final String DATABASE_NAME = "English_For_Kid";
     static final int DATABASE_VERSION = 1;
-
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(PROVIDER_NAME, "datas", URI_CODE);
         sUriMatcher.addURI(PROVIDER_NAME, "datas/#", URI_CODE);
     }
-
+    private SQLiteDatabase mDatabase;
     public EnglishForKidProvider() {
-
     }
 
     @Override
@@ -48,15 +43,15 @@ public class EnglishForKidProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
                     count = mDatabase.delete(
-                            TABLE_NAME,
-                            FIELD_ID + "=" + id,
-                            null);
+                        TABLE_NAME,
+                        FIELD_ID + "=" + id,
+                        null);
                 } else {
                     count = mDatabase.delete(
-                            TABLE_NAME,
-                            FIELD_ID + "=" + id
-                                    + " and " + selection,
-                            selectionArgs);
+                        TABLE_NAME,
+                        FIELD_ID + "=" + id
+                            + " and " + selection,
+                        selectionArgs);
                 }
                 break;
             default:
@@ -84,7 +79,6 @@ public class EnglishForKidProvider extends ContentProvider {
             default:
                 throw new SQLException("Failed to add a record into " + uri);
         }
-
     }
 
     @Override
@@ -100,7 +94,6 @@ public class EnglishForKidProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLE_NAME);
-
         switch (sUriMatcher.match(uri)) {
             case URI_CODE_ID:
                 qb.appendWhere(FIELD_ID + "=" + uri.getLastPathSegment());
@@ -108,9 +101,8 @@ public class EnglishForKidProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
-
         Cursor cursor = qb.query(mDatabase, projection, selection, selectionArgs, null,
-                null, sortOrder);
+            null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -127,13 +119,13 @@ public class EnglishForKidProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
                     count = mDatabase.update(TABLE_NAME,
-                            values, FIELD_ID + "=" + id, null);
+                        values, FIELD_ID + "=" + id, null);
                 } else {
                     count = mDatabase.update(TABLE_NAME,
-                            values, FIELD_ID + "=" + id
-                                    + " and "
-                                    + selection,
-                            selectionArgs);
+                        values, FIELD_ID + "=" + id
+                            + " and "
+                            + selection,
+                        selectionArgs);
                 }
                 break;
             default:
@@ -142,6 +134,5 @@ public class EnglishForKidProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
-
 }
 

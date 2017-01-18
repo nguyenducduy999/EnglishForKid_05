@@ -1,5 +1,4 @@
 package com.framgia.englishforkid.util;
-
 /**
  * Created by beepi on 17/01/2017.
  */
@@ -8,5 +7,4 @@ package com.framgia.englishforkid.util;
  * Usage: determine values which are constant in project
  */
 public class Constant {
-
 }

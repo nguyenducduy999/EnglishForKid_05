@@ -5,4 +5,12 @@
     <dimen name="tab_indicator_height">2dp</dimen>
     <dimen name="tab_padding_start">12dp</dimen>
     <dimen name="tab_padding_end">12dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="width_image_50">50dp</dimen>
+    <dimen name="margin_image">10dp</dimen>
+    <dimen name="margin_bottom_image">10dp</dimen>
+    <dimen name="max_width">0dp</dimen>
+    <dimen name="width_image">60dp</dimen>
+    <dimen name="height_image">60dp</dimen>
+    <dimen name="layout_margin_image">5dp</dimen>
 </resources>
