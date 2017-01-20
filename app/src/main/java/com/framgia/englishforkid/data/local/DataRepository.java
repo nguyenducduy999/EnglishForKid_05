@@ -13,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class DataRepository implements RepositoryContract {
                 }
                 if (dataObject != null) dataObjList.add(dataObject);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -141,6 +142,23 @@ public class DataRepository implements RepositoryContract {
         }
         cursor.close();
         return listData;
+    }
+
+    @Override
+    public Cursor getDataFromLocal() {
+        return mContentResolver.query(CONTENT_URI, null, null, null, null);
+    }
+
+    /**
+     * check data is available in local or not
+     *
+     * @return the number of rows found in local data
+     */
+    @Override
+    public boolean checkAvailableData() {
+        Cursor cursor = getDataFromLocal();
+        if (cursor == null || cursor.getCount() == 0) return false;
+        return true;
     }
 }
 

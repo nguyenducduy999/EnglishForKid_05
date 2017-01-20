@@ -1,7 +1,5 @@
 package com.framgia.englishforkid.fetchweb;
 
-import android.content.Context;
-
 import com.framgia.englishforkid.BasePresenter;
 import com.framgia.englishforkid.BaseView;
 
@@ -10,13 +8,16 @@ import com.framgia.englishforkid.BaseView;
  */
 public interface SplashContract {
     public interface View extends BaseView {
-        public void onLoadCompleted();
-        public Context getContext();
-        public void onLoadError();
-        public void initSubcribe();
+        void onLoadCompleted();
+        void notifyErrorNetwork();
+        void notifyUseDataLocal();
+        void initSubcribe();
+        void startMainActivity();
+        void showTryConnection();
     }
 
     public interface Presenter extends BasePresenter {
+        void notifyError();
     }
 }
 
