@@ -2,8 +2,11 @@ package com.framgia.englishforkid.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,11 +26,13 @@ import butterknife.ButterKnife;
 /**
  * Created by duynguyenduc on 17/01/2017.
  */
-public class SongFragment extends Fragment {
+public class SongFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     final static int NUMBER_COLUMS_LIST = 1;
     final static int NUMBER_COLUMS_GRID = 2;
     @BindView(R.id.recycle_song)
     RecyclerView mSongRecycler;
+    @BindView(R.id.swipe_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private ModelAdapter mModelAdapter;
     private List<VideoModel> mListVideo;
     private Context mContext;
@@ -74,6 +79,11 @@ public class SongFragment extends Fragment {
         mListVideo.add(new VideoModel("http://goo.gl/gEgYUd", "Hello"));
         mListVideo.add(new VideoModel("http://goo.gl/gEgYUd", "Hello"));
         mModelAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh() {
+        //TODO reload data
     }
 }
 
