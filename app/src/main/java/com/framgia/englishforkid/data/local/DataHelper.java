@@ -1,13 +1,13 @@
-package com.framgia.englishforkid.data;
+package com.framgia.englishforkid.data.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.framgia.englishforkid.data.EnglishForKidProvider.DATABASE_NAME;
-import static com.framgia.englishforkid.data.EnglishForKidProvider.DATABASE_VERSION;
+import static com.framgia.englishforkid.data.local.EnglishForKidProvider.DATABASE_NAME;
+import static com.framgia.englishforkid.data.local.EnglishForKidProvider.DATABASE_VERSION;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DataHelper extends SQLiteOpenHelper {
     public static final String FIELD_ID = "_id";
     public static final String FIELD_TITLE = "title";
     public static final String FIELD_URL_VIDEO = "url_video";
@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         + FIELD_URL_IMG + " TEXT NOT NULL, "
         + FIELD_TYPE + " INTERGER NOT NULL);";
 
-    public DatabaseHelper(Context context) {
+    public DataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

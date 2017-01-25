@@ -1,4 +1,4 @@
-package com.framgia.englishforkid.data;
+package com.framgia.englishforkid.data.local;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import static com.framgia.englishforkid.data.DatabaseHelper.FIELD_ID;
-import static com.framgia.englishforkid.data.DatabaseHelper.TABLE_NAME;
+import static com.framgia.englishforkid.data.local.DataHelper.FIELD_ID;
+import static com.framgia.englishforkid.data.local.DataHelper.TABLE_NAME;
 
 public class EnglishForKidProvider extends ContentProvider {
     public static final String PROVIDER_NAME = "com.framgia.EnglishForKidProvider";
@@ -29,6 +29,7 @@ public class EnglishForKidProvider extends ContentProvider {
         sUriMatcher.addURI(PROVIDER_NAME, "datas/#", URI_CODE);
     }
     private SQLiteDatabase mDatabase;
+
     public EnglishForKidProvider() {
     }
 
@@ -83,7 +84,7 @@ public class EnglishForKidProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+        DataHelper dbHelper = new DataHelper(getContext());
         mDatabase = dbHelper.getWritableDatabase();
         if (mDatabase == null) return false;
         return true;
@@ -95,6 +96,8 @@ public class EnglishForKidProvider extends ContentProvider {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLE_NAME);
         switch (sUriMatcher.match(uri)) {
+            case URI_CODE:
+                break;
             case URI_CODE_ID:
                 qb.appendWhere(FIELD_ID + "=" + uri.getLastPathSegment());
                 break;
