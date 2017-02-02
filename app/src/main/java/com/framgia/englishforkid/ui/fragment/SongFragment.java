@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  * Created by duynguyenduc on 17/01/2017.
  */
 public class SongFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-    ModelAdapter.OnItemClickListenner{
+    ModelAdapter.OnItemClickListenner {
     final static int NUMBER_COLUMS_LIST = 1;
     final static int NUMBER_COLUMS_GRID = 2;
     @BindView(R.id.recycle_song)
@@ -40,24 +40,17 @@ public class SongFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Context mContext;
     private int mType;
 
-    public static SongFragment newInstance(int type){
+    public static SongFragment newInstance(int type) {
         SongFragment fragment = new SongFragment();
         fragment.setType(type);
         return fragment;
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.song_layout, container, false);
         ButterKnife.bind(this, view);
-//        mListVideo = new ArrayList<>();
-//        mContext = getContext();
-//        mModelAdapter = new ModelAdapter(mContext, mListVideo, ModelAdapter.STATE_LIST, this);
-//        mSongRecycler.setLayoutManager(new GridLayoutManager(mContext, NUMBER_COLUMS_LIST));
-//        mSongRecycler.setAdapter(mModelAdapter);
-//        fakeData();
         initView();
         return view;
     }
@@ -68,12 +61,6 @@ public class SongFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             NUMBER_COLUMS_LIST : NUMBER_COLUMS_GRID;
         mSongRecycler.setLayoutManager(new GridLayoutManager(mContext, numColums));
         mModelAdapter.setViewType(viewType);
-        mModelAdapter.notifyDataSetChanged();
-    }
-
-    private void fakeData(List<DataObject> dataObjects) {
-        mListVideo.clear();
-        mListVideo.addAll(dataObjects);
         mModelAdapter.notifyDataSetChanged();
     }
 
@@ -88,15 +75,19 @@ public class SongFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         startActivity(intent);
     }
 
-    public void initView(){
+    public void initView() {
         mListVideo = new ArrayList<>();
         mContext = getContext();
         mModelAdapter = new ModelAdapter(mContext, mListVideo, ModelAdapter.STATE_LIST, this);
         mSongRecycler.setLayoutManager(new GridLayoutManager(mContext, NUMBER_COLUMS_LIST));
         mSongRecycler.setAdapter(mModelAdapter);
-        fakeData(DataRepository.getDataFromProvider(mType));
+        setDataForRecycleView(DataRepository.getDataFromProvider(mType));
     }
-
+    private void setDataForRecycleView(List<DataObject> dataObjects) {
+        mListVideo.clear();
+        mListVideo.addAll(dataObjects);
+        mModelAdapter.notifyDataSetChanged();
+    }
 
     public void setType(int type) {
         mType = type;

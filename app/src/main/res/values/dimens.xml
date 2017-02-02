@@ -18,11 +18,13 @@
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_7">7dp</dimen>
     <dimen name="dp_1">1dp</dimen>
-    <item name="inner_radius" type="dimen" format="float">2.3</item>
+    <item name="inner_radius" format="float" type="dimen">2.3</item>
     <dimen name="dp_300">300dp</dimen>
     <dimen name="dp_17">17dp</dimen>
     <dimen name="dp_30">30dp</dimen>
     <dimen name="dp_5">5dp</dimen>
     <dimen name="item_text_padding_list">15dp</dimen>
+    <dimen name="image_width">130dp</dimen>
+    <dimen name="image_height">100dp</dimen>
 </resources>
 

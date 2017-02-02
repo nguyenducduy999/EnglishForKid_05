@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.framgia.englishforkid.R;
+import com.framgia.englishforkid.data.model.DataObject;
 import com.framgia.englishforkid.ui.fragment.SongFragment;
 
 /**

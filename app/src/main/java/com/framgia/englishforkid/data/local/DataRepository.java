@@ -54,7 +54,7 @@ public class DataRepository implements RepositoryContract {
 
     /**
      * get data oject from {@link com.framgia.englishforkid.util.Constant#URL_SONGS}
-     * or {@link com.framgia.englishforkid.util.Constant#URL_STORIES}
+     * or {@link com.framgia.englishforkid.util.Constant}
      *
      * @param urlWeb: url of web
      * @return list of {@link DataObject}
