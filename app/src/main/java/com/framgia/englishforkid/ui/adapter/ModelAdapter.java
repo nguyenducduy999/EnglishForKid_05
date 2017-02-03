@@ -10,33 +10,31 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.framgia.englishforkid.R;
-import com.framgia.englishforkid.data.model.VideoModel;
+import com.framgia.englishforkid.data.model.DataObject;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created by duynguyenduc on 18/01/2017.
- */
 public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.ViewHolder> {
     public static final int STATE_LIST = 0;
     public static final int STATE_GRID = 1;
-    private List<VideoModel> mListVideo;
+    private List<DataObject> mListVideo;
     private LayoutInflater mLayoutInflater;
     private int mViewType = STATE_LIST;
     private Context mContext;
+    private OnItemClickListenner mListenner;
 
-    public ModelAdapter(List<VideoModel> modelList, Context context, int viewType) {
+    public ModelAdapter(Context context, List<DataObject> modelList, int viewType,
+                        OnItemClickListenner listenner) {
         mListVideo = modelList;
         mLayoutInflater = LayoutInflater.from(context);
         mViewType = viewType;
         mContext = context;
+        mListenner = listenner;
     }
-
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType ( int position){
         return mViewType;
     }
 
@@ -50,7 +48,7 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        VideoModel model = mListVideo.get(position);
+        DataObject model = mListVideo.get(position);
         holder.bindData(model);
     }
 
@@ -67,7 +65,11 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.ViewHolder> 
         mViewType = viewType;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnItemClickListenner {
+        void onClick(DataObject videoModel);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.image_song)
         ImageView mImageSong;
         @BindView(R.id.text_title)
@@ -76,14 +78,19 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
-        public void bindData(VideoModel videoModel) {
-            if (videoModel == null) return;
-            mTextTitle.setText(videoModel.getSongTitle());
-            Glide.with(mContext).load(videoModel.getIconUrl()).into(mImageSong);
+        public void bindData(DataObject dataObject) {
+            if (dataObject == null) return;
+            mTextTitle.setText(dataObject.getTitle());
+            Glide.with(mContext).load(dataObject.getUrlImage()).into(mImageSong);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListenner == null) return;
+            mListenner.onClick(mListVideo.get(getAdapterPosition()));
         }
     }
 }
-
-

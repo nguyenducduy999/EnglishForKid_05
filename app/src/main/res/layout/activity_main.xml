@@ -3,7 +3,6 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         style="@style/SongTabLayoutStyle"
@@ -12,14 +11,12 @@
         app:tabGravity="fill"
         app:tabMaxWidth="@dimen/max_width"
         app:tabMode="fixed"/>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tab_layout"
         android:background="@android:color/white"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/imgeview_swich_state"
         android:layout_width="@dimen/width_image_50"
@@ -29,6 +26,6 @@
         android:layout_margin="@dimen/margin_image"
         android:layout_marginBottom="@dimen/margin_bottom_image"
         android:src="@drawable/ic_list"/>
-
 </RelativeLayout>
+
 

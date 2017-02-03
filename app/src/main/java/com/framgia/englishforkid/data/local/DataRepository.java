@@ -3,6 +3,7 @@ package com.framgia.englishforkid.data.local;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.framgia.englishforkid.data.model.DataObject;
@@ -18,6 +19,7 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Func0;
 
+import static com.framgia.englishforkid.data.local.DataHelper.FIELD_ID;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_TITLE;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_TYPE;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_URL_IMG;
@@ -42,7 +44,7 @@ public class DataRepository implements RepositoryContract {
     public final static String ATTR_TITLE = "title";
     public final static String START_TITLE_SONG = "Song:";
     public final static String START_TITLE_STORIES = "Short stories:";
-    private Context mContext;
+    private static Context mContext;
     private ContentResolver mContentResolver;
 
     public DataRepository(Context context) {
@@ -127,6 +129,28 @@ public class DataRepository implements RepositoryContract {
     @Override
     public int deleteData() {
         return mContentResolver.delete(CONTENT_URI, null, null);
+    }
+
+    public static List<DataObject> getDataFromProvider(int types) {
+        List<DataObject> listData = null;
+        String title, urlVideo, urlImg;
+        Cursor cursor = mContext.getContentResolver()
+            .query(EnglishForKidProvider
+                .CONTENT_URI, null, FIELD_TYPE + "=" + types, null, null);
+        if (cursor == null) return null;
+        if (cursor.moveToFirst()) {
+            //....
+            listData = new ArrayList<>();
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(FIELD_ID));
+                title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
+                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+                urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
+                listData.add(new DataObject(title, urlImg, urlVideo, types));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listData;
     }
 }
 

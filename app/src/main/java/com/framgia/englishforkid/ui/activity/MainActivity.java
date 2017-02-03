@@ -56,5 +56,3 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.ic_list : R.drawable.ic_grid);
     }
 }
-
-
