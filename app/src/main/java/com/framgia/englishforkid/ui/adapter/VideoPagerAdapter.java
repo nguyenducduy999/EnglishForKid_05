@@ -6,23 +6,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.framgia.englishforkid.R;
-import com.framgia.englishforkid.ui.fragment.SongFragment;
+import com.framgia.englishforkid.data.local.DataHelper;
+import com.framgia.englishforkid.ui.fragment.VideoFragment;
 
 /**
  * Created by duynguyenduc on 17/01/2017.
  */
-public class SongPagerAdapter extends FragmentStatePagerAdapter {
+public class VideoPagerAdapter extends FragmentStatePagerAdapter {
     static final int POSITON_SONGS = 0;
     static final int POSITON_SHORT_STORY = 1;
-    public SongFragment mSongFragment;
-    public SongFragment mStoryFragment;
+    public VideoFragment mSongFragment;
+    public VideoFragment mStoryFragment;
     private String[] mTitle;
 
-    public SongPagerAdapter(FragmentManager fm, Context context) {
+    public VideoPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         mTitle = context.getResources().getStringArray(R.array.title_array);
-        mSongFragment = new SongFragment();
-        mStoryFragment = new SongFragment();
+        mSongFragment = VideoFragment.newInstance(DataHelper.TYPE_SONG);
+        mStoryFragment = VideoFragment.newInstance(DataHelper.TYPE_STORY);
     }
 
     public void switchState(int viewType) {

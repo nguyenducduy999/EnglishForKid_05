@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/image_song"
-            android:layout_width="@dimen/width_image"
-            android:layout_height="@dimen/height_image"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
             android:layout_margin="@dimen/dp_12"
             app:srcCompat="@mipmap/ic_launcher"/>
 

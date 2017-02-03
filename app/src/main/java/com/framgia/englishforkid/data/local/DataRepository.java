@@ -3,6 +3,7 @@ package com.framgia.englishforkid.data.local;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.framgia.englishforkid.data.model.DataObject;
@@ -50,13 +51,6 @@ public class DataRepository implements RepositoryContract {
         mContentResolver = mContext.getContentResolver();
     }
 
-    /**
-     * get data oject from {@link com.framgia.englishforkid.util.Constant#URL_SONGS}
-     * or {@link com.framgia.englishforkid.util.Constant#URL_STORIES}
-     *
-     * @param urlWeb: url of web
-     * @return list of {@link DataObject}
-     */
     @Override
     public List<DataObject> getDataObject(String urlWeb) {
         List dataObjList;
@@ -127,6 +121,26 @@ public class DataRepository implements RepositoryContract {
     @Override
     public int deleteData() {
         return mContentResolver.delete(CONTENT_URI, null, null);
+    }
+
+    public List<DataObject> getDataFromProvider(int types) {
+        List<DataObject> listData = null;
+        String title, urlVideo, urlImg;
+        Cursor cursor = mContext.getContentResolver()
+            .query(EnglishForKidProvider
+                .CONTENT_URI, null, FIELD_TYPE + "=" + types, null, null);
+        if (cursor == null) return null;
+        if (cursor.moveToFirst()) {
+            listData = new ArrayList<>();
+            do {
+                title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
+                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+                urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
+                listData.add(new DataObject(title, urlImg, urlVideo, types));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listData;
     }
 }
 

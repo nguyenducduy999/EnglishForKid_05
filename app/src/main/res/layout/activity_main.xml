@@ -29,6 +29,6 @@
         android:layout_margin="@dimen/margin_image"
         android:layout_marginBottom="@dimen/margin_bottom_image"
         android:src="@drawable/ic_list"/>
-
 </RelativeLayout>
+
 

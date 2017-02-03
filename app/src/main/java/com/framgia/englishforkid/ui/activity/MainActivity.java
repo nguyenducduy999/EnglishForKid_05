@@ -7,15 +7,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.englishforkid.R;
-import com.framgia.englishforkid.ui.adapter.ModelAdapter;
-import com.framgia.englishforkid.ui.adapter.SongPagerAdapter;
+import com.framgia.englishforkid.ui.adapter.VideoAdapter;
+import com.framgia.englishforkid.ui.adapter.VideoPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.framgia.englishforkid.ui.adapter.ModelAdapter.STATE_GRID;
-import static com.framgia.englishforkid.ui.adapter.ModelAdapter.STATE_LIST;
+import static com.framgia.englishforkid.ui.adapter.VideoAdapter.STATE_GRID;
+import static com.framgia.englishforkid.ui.adapter.VideoAdapter.STATE_LIST;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tab_layout)
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.imgeview_swich_state)
     FloatingActionButton mFloatingSwitchListGrid;
     private int mViewState = STATE_GRID;
-    private SongPagerAdapter mSongPagerAdapter;
+    private VideoPagerAdapter mSongPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         mSongTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mSongPagerAdapter = new SongPagerAdapter(getSupportFragmentManager(),
+        mSongPagerAdapter = new VideoPagerAdapter(getSupportFragmentManager(),
             MainActivity.this);
         mViewPager.setAdapter(mSongPagerAdapter);
         mSongTabLayout.setupWithViewPager(mViewPager);
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.imgeview_swich_state)
     public void onClick() {
-        mViewState = mViewState == STATE_LIST ? ModelAdapter.STATE_GRID : ModelAdapter
+        mViewState = mViewState == STATE_LIST ? VideoAdapter.STATE_GRID : VideoAdapter
             .STATE_LIST;
         mSongPagerAdapter.switchState(mViewState);
         setImageState(mViewState);
