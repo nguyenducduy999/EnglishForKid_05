@@ -30,7 +30,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     public void subcribe() {
         mSubscriptions.clear();
         Observable<DataObject> objectObservable = mDataRepository.getDataObservable();
-        if (objectObservable != null) {
+        if (objectObservable.isEmpty() == null) {
             mDataRepository.deleteData();
         }
         Subscription subscription = objectObservable
@@ -44,7 +44,7 @@ public class SplashPresenter implements SplashContract.Presenter {
 
                 @Override
                 public void onError(Throwable e) {
-                    mView.onLoadError();
+                    notifyError();
                     e.printStackTrace();
                 }
 
@@ -59,6 +59,17 @@ public class SplashPresenter implements SplashContract.Presenter {
     @Override
     public void unsubcribe() {
         mSubscriptions.clear();
+    }
+
+    @Override
+    public void notifyError() {
+        if (mDataRepository.checkAvailableData()) {
+            mView.notifyUseDataLocal();
+            mView.startMainActivity();
+        } else {
+            mView.notifyErrorNetwork();
+            mView.showTryConnection();
+        }
     }
 }
 

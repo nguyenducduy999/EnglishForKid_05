@@ -39,7 +39,6 @@
 
     <Button
         android:id="@+id/buton_load_error"
-        style="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -48,6 +47,7 @@
         android:layout_marginBottom="@dimen/dp_12"
         android:background="@drawable/custom_button"
         android:text="@string/action_try_again"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/color_white"
         android:visibility="gone"/>
 </RelativeLayout>

@@ -2,4 +2,7 @@
     <string name="app_name">EnglishForKid_05</string>
     <string name="msg_start_load">Loading...</string>
     <string name="action_try_again">Try again</string>
+    <string name="msg_error">Not network, please try again ...</string>
+    <string name="action_use_data_local">Not connect server,please use data in local</string>
 </resources>
+
