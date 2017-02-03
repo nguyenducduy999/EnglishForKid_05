@@ -127,29 +127,55 @@ public class DataRepository implements RepositoryContract {
     }
 
     public List<DataObject> getDataFromProvider(int types) {
-        List<DataObject> listData = null;
-        String title, urlVideo, urlImg, id;
         Cursor cursor = mContext.getContentResolver()
             .query(EnglishForKidProvider
                 .CONTENT_URI, null, FIELD_TYPE + "=" + types, null, null);
-        if (cursor == null) return null;
-        if (cursor.moveToFirst()) {
-            listData = new ArrayList<>();
-            do {
-                id = cursor.getString(cursor.getColumnIndex(FIELD_ID));
-                title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
-                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
-                urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
-                listData.add(new DataObject(id, title, urlImg, urlVideo, types));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return listData;
+        return convertCursorToList(cursor, types);
     }
 
     @Override
     public Cursor getDataFromLocal() {
         return mContentResolver.query(CONTENT_URI, null, null, null, null);
+    }
+
+    /**
+     * get cursor which belongs suggest letter from local data
+     *
+     * @param uri:  uri to request in {@link EnglishForKidProvider}
+     * @param type: type of fragment in viewpager
+     * @return list of data
+     */
+    @Override
+    public List<DataObject> getSearchingData(String querry, int type) {
+        StringBuilder selection = new StringBuilder()
+            .append(FIELD_TYPE)
+            .append("=")
+            .append(type)
+            .append(" and ")
+            .append(FIELD_TITLE).append(" like ")
+            .append("'%").append(querry)
+            .append("%'");
+        Cursor cursor = mContentResolver.query(CONTENT_URI, null, selection.toString(),
+            null,
+            null);
+        return convertCursorToList(cursor, type);
+    }
+
+    @Override
+    public List<DataObject> convertCursorToList(Cursor cursor, int type) {
+        if (cursor == null) return null;
+        List<DataObject> lists = new ArrayList();
+        String title, urlVideo, urlImg;
+        if (cursor.moveToFirst()) {
+            do {
+                title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
+                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+                urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
+                lists.add(new DataObject(title, urlImg, urlVideo, type));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return lists;
     }
 
     /**

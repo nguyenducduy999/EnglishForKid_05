@@ -4,21 +4,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        style="@style/SongTabLayoutStyle"
+    <SearchView
+        android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabGravity="fill"
-        app:tabMaxWidth="@dimen/max_width"
-        app:tabMode="fixed"/>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tab_layout"
-        android:background="@android:color/white"/>
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_hint"
+        android:theme="@style/CustomSearchView"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/imgeview_swich_state"
@@ -29,6 +23,24 @@
         android:layout_margin="@dimen/margin_image"
         android:layout_marginBottom="@dimen/margin_bottom_image"
         android:src="@drawable/ic_list"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        style="@style/SongTabLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchview"
+        app:tabGravity="fill"
+        app:tabMaxWidth="@dimen/max_width"
+        app:tabMode="fixed"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tab_layout"
+        android:background="@android:color/white"/>
 </RelativeLayout>
 
 

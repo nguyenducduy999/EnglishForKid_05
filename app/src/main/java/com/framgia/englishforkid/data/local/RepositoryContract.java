@@ -18,6 +18,8 @@ public interface RepositoryContract {
     int deleteData();
     Observable<DataObject> getDataObservable();
     Cursor getDataFromLocal();
+    List<DataObject> getSearchingData(String querry, int type);
+    List<DataObject> convertCursorToList(Cursor cursor, int type);
     boolean checkAvailableData();
     List<DataObject> getRandomData(int types, String videoId);
 }
