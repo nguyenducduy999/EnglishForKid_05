@@ -4,5 +4,8 @@
     <color name="color_primary_dark">#303F9F</color>
     <color name="color_accent">#FF4081</color>
     <color name="color_orange">#ff9830</color>
-    <color name="color_white">#f2f1f0</color>
+    <color name="color_orange_mixed_yellow">#ffcc80</color>
+    <color name="color_red">#e65100</color>
+    <color name="color_white">#ffff</color>
+    <color name="color_blue">#42a5f5</color>
 </resources>

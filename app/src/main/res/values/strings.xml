@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EnglishForKid_05</string>
+    <string name="msg_start_load">Loading...</string>
+    <string name="action_try_again">Try again</string>
 </resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_main2"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_orange_mixed_yellow"
+    tools:context="com.framgia.englishforkid.ui.activity.SpalshActivity">
+
+    <ImageView
+        android:layout_width="@dimen/size_img_icon"
+        android:layout_height="@dimen/size_img_icon"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_launcher"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/size_progressbar"
+        android:layout_height="@dimen/size_progressbar"
+        android:layout_above="@+id/textview_startload"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:progressDrawable="@drawable/circle_progress_bar"/>
+
+    <TextView
+        android:id="@+id/textview_startload"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_12"
+        android:text="@string/msg_start_load"
+        android:textColor="@color/color_white"/>
+
+    <Button
+        android:id="@+id/buton_load_error"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_12"
+        android:background="@drawable/custom_button"
+        android:text="@string/action_try_again"
+        android:textColor="@color/color_white"
+        android:visibility="gone"/>
+</RelativeLayout>
+

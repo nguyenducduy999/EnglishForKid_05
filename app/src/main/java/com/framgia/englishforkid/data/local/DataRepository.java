@@ -34,12 +34,14 @@ public class DataRepository implements RepositoryContract {
     public final static String TAG = "Jsoup";
     public final static String URL_SONGS = URL_BASE + "songs";
     public final static String URL_STORIES = URL_BASE + "short-stories";
-    public final static String ELEMENT_CLASS = "field-content";
+    public final static String ELEMENT_CLASS = "div.field-content";
     public final static String ELEMENT_VIDEO_TAG = "a";
     public final static String ELEMENT_IMAGE_TAG = "img";
     public final static String ATTR_LINK_VIDEO = "href";
     public final static String ATTR_LINK_IMAGE = "src";
     public final static String ATTR_TITLE = "title";
+    public final static String START_TITLE_SONG = "Song:";
+    public final static String START_TITLE_STORIES = "Short stories:";
     private Context mContext;
     private ContentResolver mContentResolver;
 
@@ -63,7 +65,7 @@ public class DataRepository implements RepositoryContract {
         Document document;
         try {
             document = Jsoup.connect(urlWeb).get();
-            Elements classElements = document.getElementsByClass(ELEMENT_CLASS);
+            Elements classElements = document.select(ELEMENT_CLASS);
             if (classElements == null) return null;
             Elements videoElements = classElements.select(ELEMENT_VIDEO_TAG);
             if (videoElements == null) return null;
@@ -73,11 +75,18 @@ public class DataRepository implements RepositoryContract {
                 Elements imageElement = element.select(ELEMENT_IMAGE_TAG);
                 urlImge = imageElement.attr(ATTR_LINK_IMAGE);
                 title = imageElement.attr(ATTR_TITLE);
+                if (title == null || title.equals("")) continue;
                 switch (urlWeb) {
                     case URL_SONGS:
+                        if (title.startsWith(START_TITLE_SONG)) {
+                            title = title.substring(START_TITLE_SONG.length(), title.length());
+                        }
                         dataObject = new DataObject(title, urlImge, urlVideo, TYPE_SONG);
                         break;
                     case URL_STORIES:
+                        if (title.startsWith(START_TITLE_STORIES)) {
+                            title = title.substring(START_TITLE_STORIES.length(), title.length());
+                        }
                         dataObject = new DataObject(title, urlImge, urlVideo, TYPE_STORY);
                         break;
                     default:

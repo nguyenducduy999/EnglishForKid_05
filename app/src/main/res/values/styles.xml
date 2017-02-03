@@ -15,4 +15,5 @@
         <item name="tabPaddingEnd">@dimen/tab_padding_end</item>
         <item name="tabBackground">?attr/selectableItemBackground</item>
     </style>
+
 </resources>
