@@ -1,7 +1,5 @@
 package com.framgia.englishforkid.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -79,8 +77,7 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onClick(DataObject videoModel) {
-        Intent intent = new Intent(getContext(), PlayVideoActivity.class);
-        startActivity(intent);
+        startActivity(PlayVideoActivity.getPlayVideoIntent(getContext(), videoModel));
     }
 
     public void initView() {
@@ -88,6 +85,11 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         mModelAdapter = new VideoAdapter(getContext(), mListVideo, VideoAdapter.STATE_LIST, this);
         mSongRecycler.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_COLUMS_LIST));
         mSongRecycler.setAdapter(mModelAdapter);
+        mSwipeRefreshLayout.setColorSchemeResources(
+            R.color.color_blue,
+            R.color.color_grey,
+            R.color.color_orange,
+            R.color.color_red);
         loadData();
     }
 

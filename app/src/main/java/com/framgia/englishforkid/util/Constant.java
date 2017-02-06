@@ -8,5 +8,6 @@ package com.framgia.englishforkid.util;
  */
 public class Constant {
     public final static String URL_BASE = "https://learnenglishkids.britishcouncil.org/en/";
+    public final static int COUNT_RANDOM_VIDEO = 10;
 }
 

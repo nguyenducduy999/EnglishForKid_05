@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/holo_green_light"
+    android:background="@android:color/darker_gray"
     android:orientation="vertical">
 
     <VideoView
@@ -17,6 +17,12 @@
         android:id="@+id/seekbar_play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:text="@string/time_play_video"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,37 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/dp_5"
+            android:layout_toRightOf="@+id/image_download"
             app:srcCompat="@drawable/ic_play"/>
-
-        <ImageView
-            android:id="@+id/image_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:layout_toRightOf="@+id/image_play"
-            app:srcCompat="@drawable/ic_next"/>
-
-        <ImageView
-            android:id="@+id/image_previous"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="@dimen/dp_30"
-            android:layout_toLeftOf="@+id/image_play"
-            app:srcCompat="@drawable/ic_previous"/>
-
-
-        <TextView
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_marginStart="@dimen/dp_17"
-            android:layout_toRightOf="@+id/image_play"
-            android:textSize="@dimen/item_text_padding_list"
-            />
 
         <ImageView
             android:id="@+id/image_fullscreen"
@@ -81,6 +58,7 @@
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_random_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

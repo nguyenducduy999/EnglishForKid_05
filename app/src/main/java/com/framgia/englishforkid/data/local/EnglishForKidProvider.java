@@ -138,4 +138,3 @@ public class EnglishForKidProvider extends ContentProvider {
         return count;
     }
 }
-

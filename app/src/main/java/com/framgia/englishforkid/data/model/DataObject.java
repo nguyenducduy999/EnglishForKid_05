@@ -1,13 +1,24 @@
 package com.framgia.englishforkid.data.model;
 
+import java.io.Serializable;
+
 /**
  * Created by beepi on 19/01/2017.
  */
-public class DataObject {
+public class DataObject implements Serializable{
+    private String mId;
     private String mTitle;
     private String mUrlImage;
     private String mUrlVideo;
     private int mType;
+
+    public DataObject(String id, String title, String urlImage, String urlVideo, int type) {
+        mTitle = title;
+        mUrlImage = urlImage;
+        mUrlVideo = urlVideo;
+        mType = type;
+        mId = id;
+    }
 
     public DataObject(String title, String urlImage, String urlVideo, int type) {
         mTitle = title;
@@ -46,5 +57,13 @@ public class DataObject {
 
     public void setType(int type) {
         mType = type;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 }
