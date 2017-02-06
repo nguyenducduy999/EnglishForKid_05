@@ -1,6 +1,7 @@
 package com.framgia.englishforkid.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,8 +14,8 @@ import com.framgia.englishforkid.ui.fragment.VideoFragment;
  * Created by duynguyenduc on 17/01/2017.
  */
 public class VideoPagerAdapter extends FragmentStatePagerAdapter {
-    static final int POSITON_SONGS = 0;
-    static final int POSITON_SHORT_STORY = 1;
+    public static final int POSITON_SONGS = 0;
+    public static final int POSITON_SHORT_STORY = 1;
     public VideoFragment mSongFragment;
     public VideoFragment mStoryFragment;
     private String[] mTitle;

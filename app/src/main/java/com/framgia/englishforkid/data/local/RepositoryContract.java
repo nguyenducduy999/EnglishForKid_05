@@ -19,5 +19,5 @@ public interface RepositoryContract {
     Observable<DataObject> getDataObservable();
     Cursor getDataFromLocal();
     boolean checkAvailableData();
+    List<DataObject> getRandomData(int types, String videoId);
 }
-

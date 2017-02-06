@@ -20,6 +20,7 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Func0;
 
+import static com.framgia.englishforkid.data.local.DataHelper.FIELD_ID;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_TITLE;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_TYPE;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_URL_IMG;
@@ -27,6 +28,7 @@ import static com.framgia.englishforkid.data.local.DataHelper.FIELD_URL_VIDEO;
 import static com.framgia.englishforkid.data.local.DataHelper.TYPE_SONG;
 import static com.framgia.englishforkid.data.local.DataHelper.TYPE_STORY;
 import static com.framgia.englishforkid.data.local.EnglishForKidProvider.CONTENT_URI;
+import static com.framgia.englishforkid.util.Constant.COUNT_RANDOM_VIDEO;
 import static com.framgia.englishforkid.util.Constant.URL_BASE;
 
 /**
@@ -126,7 +128,7 @@ public class DataRepository implements RepositoryContract {
 
     public List<DataObject> getDataFromProvider(int types) {
         List<DataObject> listData = null;
-        String title, urlVideo, urlImg;
+        String title, urlVideo, urlImg, id;
         Cursor cursor = mContext.getContentResolver()
             .query(EnglishForKidProvider
                 .CONTENT_URI, null, FIELD_TYPE + "=" + types, null, null);
@@ -134,10 +136,11 @@ public class DataRepository implements RepositoryContract {
         if (cursor.moveToFirst()) {
             listData = new ArrayList<>();
             do {
+                id = cursor.getString(cursor.getColumnIndex(FIELD_ID));
                 title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
                 urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
                 urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
-                listData.add(new DataObject(title, urlImg, urlVideo, types));
+                listData.add(new DataObject(id, title, urlImg, urlVideo, types));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -160,5 +163,29 @@ public class DataRepository implements RepositoryContract {
         if (cursor == null || cursor.getCount() == 0) return false;
         return true;
     }
-}
 
+    @Override
+    public List<DataObject> getRandomData(int types, String videoId) {
+        List<DataObject> listData = null;
+        String title, urlVideo, urlImg, id;
+        Cursor cursor = mContext.getContentResolver()
+            .query(EnglishForKidProvider.CONTENT_URI,
+                null,
+                FIELD_TYPE + "=" + types + " and " + FIELD_ID + "!=" + videoId,
+                null,
+                "RANDOM() LIMIT " + COUNT_RANDOM_VIDEO);
+        if (cursor == null) return null;
+        if (cursor.moveToFirst()) {
+            listData = new ArrayList<>();
+            do {
+                id = cursor.getString(cursor.getColumnIndex(FIELD_ID));
+                title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
+                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+                urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
+                listData.add(new DataObject(id, title, urlImg, urlVideo, types));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listData;
+    }
+}

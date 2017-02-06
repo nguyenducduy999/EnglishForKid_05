@@ -4,5 +4,6 @@
     <string name="action_try_again">Try again</string>
     <string name="msg_error">Not network, please try again ...</string>
     <string name="action_use_data_local">Not connect server,please use data in local</string>
+    <string name="time_play_video">00:00</string>
 </resources>
 
