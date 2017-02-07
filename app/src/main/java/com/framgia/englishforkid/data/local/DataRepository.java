@@ -45,7 +45,9 @@ public class DataRepository implements RepositoryContract {
     public final static String ATTR_LINK_IMAGE = "src";
     public final static String ATTR_TITLE = "title";
     public final static String START_TITLE_SONG = "Song:";
-    public final static String START_TITLE_STORIES = "Short stories:";
+    public final static String START_TITLE_SONGS = "Songs:";
+    public final static String START_TITLE_STORY = "Short stories:";
+    public final static String START_TITLE_STORIES = "Story:";
     private Context mContext;
     private ContentResolver mContentResolver;
 
@@ -77,11 +79,15 @@ public class DataRepository implements RepositoryContract {
                     case URL_SONGS:
                         if (title.startsWith(START_TITLE_SONG)) {
                             title = title.substring(START_TITLE_SONG.length(), title.length());
+                        } else if (title.startsWith(START_TITLE_SONGS)) {
+                            title = title.substring(START_TITLE_SONGS.length(), title.length());
                         }
                         dataObject = new DataObject(title, urlImge, urlVideo, TYPE_SONG);
                         break;
                     case URL_STORIES:
-                        if (title.startsWith(START_TITLE_STORIES)) {
+                        if (title.startsWith(START_TITLE_STORY)) {
+                            title = title.substring(START_TITLE_STORY.length(), title.length());
+                        } else if (title.startsWith(START_TITLE_STORIES)) {
                             title = title.substring(START_TITLE_STORIES.length(), title.length());
                         }
                         dataObject = new DataObject(title, urlImge, urlVideo, TYPE_STORY);
@@ -141,8 +147,8 @@ public class DataRepository implements RepositoryContract {
     /**
      * get cursor which belongs suggest letter from local data
      *
-     * @param uri:  uri to request in {@link EnglishForKidProvider}
-     * @param type: type of fragment in viewpager
+     * @param querry: key text to request in {@link EnglishForKidProvider}
+     * @param type:   type of fragment in viewpager
      * @return list of data
      */
     @Override

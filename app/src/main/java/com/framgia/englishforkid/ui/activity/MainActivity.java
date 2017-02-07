@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
     private int mViewState = STATE_GRID;
     private VideoPagerAdapter mSongPagerAdapter;
     @BindView(R.id.searchview)
-    SearchView mSearchView ;
+    SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

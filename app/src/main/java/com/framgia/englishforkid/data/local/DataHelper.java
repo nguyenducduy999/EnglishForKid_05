@@ -18,7 +18,8 @@ public class DataHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "english_for_kid";
     public static final String COMMAND_CREATE_DB = " CREATE TABLE " + TABLE_NAME + " ("
         + FIELD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-        + FIELD_TITLE + " TEXT NOT NULL, " + FIELD_URL_VIDEO + " TEXT NOT NULL, "
+        + FIELD_TITLE + " TEXT NOT NULL, "
+        + FIELD_URL_VIDEO + " TEXT NOT NULL, "
         + FIELD_URL_IMG + " TEXT NOT NULL, "
         + FIELD_TYPE + " INTERGER NOT NULL);";
 
