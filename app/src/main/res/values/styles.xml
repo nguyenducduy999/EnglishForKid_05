@@ -16,4 +16,8 @@
         <item name="tabBackground">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="CustomSearchView"
+           parent="@android:style/Widget.Holo">
+        <item name="android:textColorHint">@color/color_little_grey</item>
+    </style>
 </resources>

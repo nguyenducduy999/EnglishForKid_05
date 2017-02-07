@@ -1,7 +1,6 @@
 package com.framgia.englishforkid.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -19,12 +18,15 @@ public class VideoPagerAdapter extends FragmentStatePagerAdapter {
     public VideoFragment mSongFragment;
     public VideoFragment mStoryFragment;
     private String[] mTitle;
+    private String mKeySearch;
 
     public VideoPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         mTitle = context.getResources().getStringArray(R.array.title_array);
-        mSongFragment = VideoFragment.newInstance(DataHelper.TYPE_SONG);
-        mStoryFragment = VideoFragment.newInstance(DataHelper.TYPE_STORY);
+        mSongFragment =
+            VideoFragment.newInstance(DataHelper.TYPE_SONG);
+        mStoryFragment =
+            VideoFragment.newInstance(DataHelper.TYPE_STORY);
     }
 
     public void switchState(int viewType) {
@@ -52,5 +54,18 @@ public class VideoPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitle[position];
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        VideoFragment fragment = (VideoFragment) object;
+        if (fragment != null) {
+            fragment.onUpdate(mKeySearch);
+        }
+        return super.getItemPosition(object);
+    }
+
+    public void setKeySearch(String keySearch) {
+        mKeySearch = keySearch;
     }
 }

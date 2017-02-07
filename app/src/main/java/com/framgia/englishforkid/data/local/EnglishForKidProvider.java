@@ -26,7 +26,7 @@ public class EnglishForKidProvider extends ContentProvider {
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(PROVIDER_NAME, "datas", URI_CODE);
-        sUriMatcher.addURI(PROVIDER_NAME, "datas/#", URI_CODE);
+        sUriMatcher.addURI(PROVIDER_NAME, "datas/#", URI_CODE_ID);
     }
     private SQLiteDatabase mDatabase;
 

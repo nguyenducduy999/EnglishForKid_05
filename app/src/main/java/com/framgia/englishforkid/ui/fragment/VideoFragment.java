@@ -36,6 +36,7 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private VideoAdapter mModelAdapter;
     private List<DataObject> mListVideo;
     private int mType;
+    private DataRepository mDataRepository;
 
     public static VideoFragment newInstance(int type) {
         VideoFragment fragment = new VideoFragment();
@@ -63,7 +64,8 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private List<DataObject> loadData() {
-        List data = new DataRepository(getContext()).getDataFromProvider(mType);
+        mDataRepository = new DataRepository(getContext());
+        List<DataObject> data = mDataRepository.getDataFromProvider(mType);
         mListVideo.clear();
         mListVideo.addAll(data);
         mModelAdapter.notifyDataSetChanged();
@@ -80,7 +82,14 @@ public class VideoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         startActivity(PlayVideoActivity.getPlayVideoIntent(getContext(), videoModel));
     }
 
-    public void initView() {
+    public void onUpdate(String querry) {
+        mListVideo.clear();
+        List<DataObject> suggestions = mDataRepository.getSearchingData(querry, mType);
+        if (suggestions != null) mListVideo.addAll(suggestions);
+        mModelAdapter.notifyDataSetChanged();
+    }
+
+    private void initView() {
         mListVideo = new ArrayList<>();
         mModelAdapter = new VideoAdapter(getContext(), mListVideo, VideoAdapter.STATE_LIST, this);
         mSongRecycler.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_COLUMS_LIST));
