@@ -6,23 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/darker_gray"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <VideoView
-        android:id="@+id/video_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_300"/>
+        android:layout_height="wrap_content">
 
-    <SeekBar
-        android:id="@+id/seekbar_play"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_300"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
-        android:text="@string/time_play_video"/>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_progressbar"
+            android:layout_above="@+id/textview_startload"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:progressDrawable="@drawable/circle_progress_bar"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,17 +42,18 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/dp_5"
             app:srcCompat="@drawable/ic_download"/>
-
-        <ImageView
-            android:id="@+id/image_play"
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:id="@+id/image_exit_full_screen"
             android:layout_margin="@dimen/dp_5"
-            android:layout_toRightOf="@+id/image_download"
-            app:srcCompat="@drawable/ic_play"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_exit_full_screen"
+            android:visibility="gone"/>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/image_fullscreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +61,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/dp_5"
-            app:srcCompat="@drawable/ic_full_screen"/>
+            android:background="@drawable/ic_full_screen"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

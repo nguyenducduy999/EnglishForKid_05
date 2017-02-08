@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.PlayVideoActivity"/>
+        <activity android:name=".videoview.PlayVideoActivity"
+                  android:configChanges="orientation|screenSize"/>
 
         <provider
             android:name=".data.local.EnglishForKidProvider"

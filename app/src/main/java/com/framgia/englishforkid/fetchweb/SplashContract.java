@@ -8,16 +8,13 @@ import com.framgia.englishforkid.BaseView;
  */
 public interface SplashContract {
     public interface View extends BaseView {
-        void onLoadCompleted();
-        void notifyErrorNetwork();
-        void notifyUseDataLocal();
-        void initSubcribe();
         void startMainActivity();
         void showTryConnection();
+        void notifyUseDataLocal();
     }
 
     public interface Presenter extends BasePresenter {
-        void notifyError();
+
     }
 }
 

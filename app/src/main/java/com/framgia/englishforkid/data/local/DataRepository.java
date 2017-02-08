@@ -13,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import static com.framgia.englishforkid.data.local.DataHelper.FIELD_ID;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_TITLE;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_TYPE;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_URL_IMG;
+import static com.framgia.englishforkid.data.local.DataHelper.FIELD_URL_PAGE_VIDEO;
 import static com.framgia.englishforkid.data.local.DataHelper.FIELD_URL_VIDEO;
 import static com.framgia.englishforkid.data.local.DataHelper.TYPE_SONG;
 import static com.framgia.englishforkid.data.local.DataHelper.TYPE_STORY;
@@ -35,18 +37,19 @@ import static com.framgia.englishforkid.util.Constant.URL_BASE;
  * Created by beepi on 20/01/2017.
  */
 public class DataRepository implements RepositoryContract {
-    public final static String TAG = "Jsoup";
-    public final static String URL_SONGS = URL_BASE + "songs";
-    public final static String URL_STORIES = URL_BASE + "short-stories";
+    public final static String URL_SONGS = URL_BASE + "/en/songs";
+    public final static String URL_STORIES = URL_BASE + "/en/short-stories";
     public final static String ELEMENT_CLASS = "div.field-content";
-    public final static String ELEMENT_VIDEO_TAG = "a";
+    public final static String ELEMENT_VIDEO_PAGE_TAG = "a";
     public final static String ELEMENT_IMAGE_TAG = "img";
-    public final static String ATTR_LINK_VIDEO = "href";
+    public final static String ATTR_LINK_VIDEO_PAGE = "href";
+    public final static String ELEMENT_VIDEO_TAG = ".viddler-auto-embed";
+    public final static String ATTR_VIDEO_ID = "data-video-id";
     public final static String ATTR_LINK_IMAGE = "src";
     public final static String ATTR_TITLE = "title";
     public final static String START_TITLE_SONG = "Song:";
     public final static String START_TITLE_SONGS = "Songs:";
-    public final static String START_TITLE_STORY = "Short stories:";
+    public final static String START_TITLE_STORIY = "Short stories:";
     public final static String START_TITLE_STORIES = "Story:";
     private Context mContext;
     private ContentResolver mContentResolver;
@@ -66,11 +69,11 @@ public class DataRepository implements RepositoryContract {
             document = Jsoup.connect(urlWeb).get();
             Elements classElements = document.select(ELEMENT_CLASS);
             if (classElements == null) return null;
-            Elements videoElements = classElements.select(ELEMENT_VIDEO_TAG);
+            Elements videoElements = classElements.select(ELEMENT_VIDEO_PAGE_TAG);
             if (videoElements == null) return null;
             dataObjList = new ArrayList();
             for (Element element : videoElements) {
-                urlVideo = element.attr(ATTR_LINK_VIDEO);
+                urlVideo = element.attr(ATTR_LINK_VIDEO_PAGE);
                 Elements imageElement = element.select(ELEMENT_IMAGE_TAG);
                 urlImge = imageElement.attr(ATTR_LINK_IMAGE);
                 title = imageElement.attr(ATTR_TITLE);
@@ -79,15 +82,15 @@ public class DataRepository implements RepositoryContract {
                     case URL_SONGS:
                         if (title.startsWith(START_TITLE_SONG)) {
                             title = title.substring(START_TITLE_SONG.length(), title.length());
-                        } else if (title.startsWith(START_TITLE_SONGS)) {
+                        } else {
                             title = title.substring(START_TITLE_SONGS.length(), title.length());
                         }
                         dataObject = new DataObject(title, urlImge, urlVideo, TYPE_SONG);
                         break;
                     case URL_STORIES:
-                        if (title.startsWith(START_TITLE_STORY)) {
-                            title = title.substring(START_TITLE_STORY.length(), title.length());
-                        } else if (title.startsWith(START_TITLE_STORIES)) {
+                        if (title.startsWith(START_TITLE_STORIY)) {
+                            title = title.substring(START_TITLE_STORIY.length(), title.length());
+                        } else {
                             title = title.substring(START_TITLE_STORIES.length(), title.length());
                         }
                         dataObject = new DataObject(title, urlImge, urlVideo, TYPE_STORY);
@@ -122,7 +125,7 @@ public class DataRepository implements RepositoryContract {
         ContentValues values = new ContentValues();
         values.put(FIELD_TITLE, dataObject.getTitle());
         values.put(FIELD_URL_IMG, dataObject.getUrlImage());
-        values.put(FIELD_URL_VIDEO, dataObject.getUrlVideo());
+        values.put(FIELD_URL_PAGE_VIDEO, dataObject.getUrlVideoPage());
         values.put(FIELD_TYPE, dataObject.getType());
         return mContentResolver.insert(CONTENT_URI, values);
     }
@@ -158,8 +161,10 @@ public class DataRepository implements RepositoryContract {
             .append("=")
             .append(type)
             .append(" and ")
-            .append(FIELD_TITLE).append(" like ")
-            .append("'%").append(querry)
+            .append(FIELD_TITLE)
+            .append(" like ")
+            .append("'%")
+            .append(querry)
             .append("%'");
         Cursor cursor = mContentResolver.query(CONTENT_URI, null, selection.toString(),
             null,
@@ -172,12 +177,14 @@ public class DataRepository implements RepositoryContract {
         if (cursor == null) return null;
         List<DataObject> lists = new ArrayList();
         String title, urlVideo, urlImg;
+        int id;
         if (cursor.moveToFirst()) {
             do {
+                id = cursor.getInt(cursor.getColumnIndex(FIELD_ID));
                 title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
-                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_PAGE_VIDEO));
                 urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
-                lists.add(new DataObject(title, urlImg, urlVideo, type));
+                lists.add(new DataObject(id, title, urlImg, urlVideo, type));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -199,7 +206,8 @@ public class DataRepository implements RepositoryContract {
     @Override
     public List<DataObject> getRandomData(int types, String videoId) {
         List<DataObject> listData = null;
-        String title, urlVideo, urlImg, id;
+        String title, urlVideo, urlImg;
+        int id;
         Cursor cursor = mContext.getContentResolver()
             .query(EnglishForKidProvider.CONTENT_URI,
                 null,
@@ -210,14 +218,91 @@ public class DataRepository implements RepositoryContract {
         if (cursor.moveToFirst()) {
             listData = new ArrayList<>();
             do {
-                id = cursor.getString(cursor.getColumnIndex(FIELD_ID));
+                id = cursor.getInt(cursor.getColumnIndex(FIELD_ID));
                 title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
-                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_PAGE_VIDEO));
                 urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
                 listData.add(new DataObject(id, title, urlImg, urlVideo, types));
             } while (cursor.moveToNext());
         }
         cursor.close();
         return listData;
+    }
+
+    /**
+     * insert urlVideo into object
+     *
+     * @param video: object need updating
+     * @return object updated
+     */
+    @Override
+    public String getIdVideo(DataObject video) {
+        if (video == null) return null;
+        Document document = null;
+        try {
+            document =
+                Jsoup.connect(URL_BASE.concat(video.getUrlVideoPage())).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return document.select(ELEMENT_VIDEO_TAG).first().attr(ATTR_VIDEO_ID);
+    }
+
+    @Override
+    public Observable<String> getIdVideoObservable(final DataObject data) {
+        return Observable.defer(new Func0<Observable<String>>() {
+            @Override
+            public Observable<String> call() {
+                return Observable.just(getIdVideo(data));
+            }
+        });
+    }
+
+    @Override
+    public int updateUrlVideo(DataObject video) {
+        if (video == null) return 0;
+        Uri uriUpdate = CONTENT_URI.buildUpon().appendEncodedPath(
+            String.valueOf(video.getId())).build();
+        return mContentResolver.update(uriUpdate, convertObject(video), FIELD_TITLE + "=?", new
+            String[]{video.getTitle()});
+    }
+
+    @Override
+    public ContentValues convertObject(DataObject dataObject) {
+        ContentValues contentValues = new ContentValues();
+        if (dataObject == null) return null;
+        contentValues.put(FIELD_TITLE, dataObject.getTitle());
+        contentValues.put(FIELD_TYPE, dataObject.getType());
+        contentValues.put(FIELD_URL_IMG, dataObject.getUrlImage());
+        contentValues.put(FIELD_URL_PAGE_VIDEO, dataObject.getUrlVideoPage());
+        contentValues.put(FIELD_URL_VIDEO, dataObject.getUrlVideo());
+        contentValues.put(FIELD_ID, dataObject.getId());
+        return contentValues;
+    }
+
+    @Override
+    public String getUrlVideoLocal(DataObject video) {
+        Uri uriRequest = CONTENT_URI.buildUpon()
+            .appendEncodedPath(String.valueOf(video.getId()))
+            .build();
+        Cursor cursor = mContentResolver.query(uriRequest, null, FIELD_TITLE + "=?", new
+                String[]{video.getTitle()},
+            null);
+        String url = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            url = cursor.getString(cursor.getColumnIndex(FIELD_URL_VIDEO));
+        }
+        return url;
+    }
+
+    @Override
+    public boolean checkExistFile(String directory) {
+        if (directory != null) {
+            File file = new File(directory);
+            if (file.isFile())
+                return true;
+        }
+        return false;
     }
 }

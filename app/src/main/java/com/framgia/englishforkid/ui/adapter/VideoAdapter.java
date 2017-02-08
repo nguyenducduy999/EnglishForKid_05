@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.framgia.englishforkid.R;
 import com.framgia.englishforkid.data.model.DataObject;
-import com.framgia.englishforkid.ui.activity.PlayVideoActivity;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     }
 
     @Override
-    public int getItemViewType ( int position){
+    public int getItemViewType(int position) {
         return mViewType;
     }
 

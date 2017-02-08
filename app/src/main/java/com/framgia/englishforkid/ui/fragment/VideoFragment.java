@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.framgia.englishforkid.R;
 import com.framgia.englishforkid.data.local.DataRepository;
 import com.framgia.englishforkid.data.model.DataObject;
-import com.framgia.englishforkid.ui.activity.PlayVideoActivity;
+import com.framgia.englishforkid.videoview.PlayVideoActivity;
 import com.framgia.englishforkid.ui.adapter.VideoAdapter;
 
 import java.util.ArrayList;
