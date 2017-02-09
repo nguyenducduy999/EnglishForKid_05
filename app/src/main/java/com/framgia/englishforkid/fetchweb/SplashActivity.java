@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.framgia.englishforkid.R;
 import com.framgia.englishforkid.data.local.DataRepository;
-import com.framgia.englishforkid.ui.activity.MainActivity;
+import com.framgia.englishforkid.main.MainActivity;
 
 import rx.subscriptions.CompositeSubscription;
 
@@ -91,7 +91,6 @@ public class SplashActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.subcribe();
     }
 
     @Override

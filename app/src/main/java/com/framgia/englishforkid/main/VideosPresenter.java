@@ -1,7 +1,9 @@
-package com.framgia.englishforkid.fetchweb;
+package com.framgia.englishforkid.main;
 
 import com.framgia.englishforkid.data.local.DataRepository;
 import com.framgia.englishforkid.data.model.DataObject;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -13,22 +15,50 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by beepi on 19/01/2017.
  */
-public class SplashPresenter implements SplashContract.Presenter {
-    static int count = 0;
-    private SplashContract.View mView;
+public class VideosPresenter implements VideosContract.Presenter {
+    private VideosContract.View mView;
     private DataRepository mDataRepository;
     private CompositeSubscription mSubscriptions;
+    private int mType;
 
-    public SplashPresenter(SplashContract.View view,
+    public VideosPresenter(VideosContract.View view,
+                           int type,
                            DataRepository dataRepository,
                            CompositeSubscription compositeSubscription) {
         mView = view;
         mDataRepository = dataRepository;
         mSubscriptions = compositeSubscription;
+        mType = type;
     }
 
     @Override
     public void subcribe() {
+        getData();
+    }
+
+    @Override
+    public void unsubcribe() {
+        mSubscriptions.clear();
+    }
+
+    @Override
+    public void notifyError() {
+    }
+
+    @Override
+    public void showSearchingData(String keySearch) {
+        List<DataObject> datas = mDataRepository.getSearchingData(keySearch, mType);
+        mView.updateVideo(datas);
+    }
+
+    @Override
+    public void getData() {
+        List<DataObject> datas = mDataRepository.getDataFromProvider(mType);
+        if (datas != null) mView.updateVideo(datas);
+    }
+
+    @Override
+    public void refreshData() {
         mSubscriptions.clear();
         Observable<DataObject> objectObservable = mDataRepository.getDataObservable();
         if (objectObservable.isEmpty() != null) {
@@ -40,12 +70,13 @@ public class SplashPresenter implements SplashContract.Presenter {
             .subscribe(new Subscriber<DataObject>() {
                 @Override
                 public void onCompleted() {
+                    getData();
                     mView.onLoadCompleted();
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    notifyError();
+                    mView.notifyErrorNetwork();
                     e.printStackTrace();
                 }
 
@@ -55,22 +86,6 @@ public class SplashPresenter implements SplashContract.Presenter {
                 }
             });
         mSubscriptions.add(subscription);
-    }
-
-    @Override
-    public void unsubcribe() {
-        mSubscriptions.clear();
-    }
-
-    @Override
-    public void notifyError() {
-        if (mDataRepository.checkAvailableData()) {
-            mView.notifyUseDataLocal();
-            mView.startMainActivity();
-        } else {
-            mView.notifyErrorNetwork();
-            mView.showTryConnection();
-        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.framgia.englishforkid.ui.adapter;
+package com.framgia.englishforkid.main;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.framgia.englishforkid.R;
 import com.framgia.englishforkid.data.model.DataObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
     public static final int STATE_LIST = 0;
     public static final int STATE_GRID = 1;
-    private List<DataObject> mListVideo;
+    private List<DataObject> mListVideo = new ArrayList<>();
     private LayoutInflater mLayoutInflater;
     private int mViewType = STATE_LIST;
     private Context mContext;
@@ -64,6 +65,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     public void setViewType(int viewType) {
         mViewType = viewType;
+    }
+
+    public void updateData(List<DataObject> datas) {
+        if (datas == null) return;
+        if (mListVideo == null) mListVideo = new ArrayList<>();
+        mListVideo.clear();
+        mListVideo.addAll(datas);
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListenner {

@@ -1,11 +1,17 @@
 <resources>
-    <string name="app_name">EnglishForKid_05</string>
+    <string name="app_name">English For Kid</string>
     <string name="msg_start_load">Loading...</string>
     <string name="action_try_again">Try again</string>
     <string name="msg_error">Not network, please try again ...</string>
     <string name="action_use_data_local">Not connect server,please use data in local</string>
-    <string name="time_play_video">00:00</string>
     <string name="search_hint">Searching...</string>
     <string name="msg_video_error">Network error, please load again...</string>
+    <string name="msg_permison_dennied">Permision dennied</string>
+    <string name="title_dialog">Information</string>
+    <string name="msg_infor">Frovide permission for save video to SDCard</string>
+    <string name="error_fail">"Can't download. Please try again."</string>
+    <string name="msg_done">Download done</string>
+    <string name="msg_exist_file">File already exist in Download folder</string>
+    <string name="msg_start_download">Start download...</string>
 </resources>
 

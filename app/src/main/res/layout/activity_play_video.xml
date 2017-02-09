@@ -2,7 +2,6 @@
 <LinearLayout
     android:id="@+id/ll_status_bar"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/darker_gray"
@@ -34,22 +33,23 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_30">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/image_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/dp_5"
-            app:srcCompat="@drawable/ic_download"/>
+            android:background="@drawable/ic_download"/>
+
         <ImageButton
+            android:id="@+id/image_exit_full_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/image_exit_full_screen"
-            android:layout_margin="@dimen/dp_5"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dp_5"
             android:background="@drawable/ic_exit_full_screen"
             android:visibility="gone"/>
 

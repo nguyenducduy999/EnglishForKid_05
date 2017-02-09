@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_orange_mixed_yellow"
-    tools:context="com.framgia.englishforkid.ui.activity.SpalshActivity">
+    tools:context="com.framgia.englishforkid.main.activity.SpalshActivity">
 
     <ImageView
         android:layout_width="@dimen/size_img_icon"

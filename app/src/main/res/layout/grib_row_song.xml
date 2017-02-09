@@ -28,6 +28,7 @@
             android:background="@color/color_grey"
             android:gravity="center"
             android:lines="1"
-            android:padding="@dimen/dp_5"/>
+            android:padding="@dimen/dp_5"
+            android:textColor="@color/color_white"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

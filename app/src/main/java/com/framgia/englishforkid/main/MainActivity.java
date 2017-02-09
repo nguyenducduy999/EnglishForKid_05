@@ -1,4 +1,4 @@
-package com.framgia.englishforkid.ui.activity;
+package com.framgia.englishforkid.main;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,28 +8,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.SearchView;
 
 import com.framgia.englishforkid.R;
-import com.framgia.englishforkid.ui.adapter.VideoAdapter;
-import com.framgia.englishforkid.ui.adapter.VideoPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.framgia.englishforkid.ui.adapter.VideoAdapter.STATE_GRID;
-import static com.framgia.englishforkid.ui.adapter.VideoAdapter.STATE_LIST;
+import static com.framgia.englishforkid.main.VideoAdapter.STATE_GRID;
+import static com.framgia.englishforkid.main.VideoAdapter.STATE_LIST;
 
 public class MainActivity extends AppCompatActivity
     implements android.widget.SearchView.OnQueryTextListener {
+    public static final String STATE = "statelist";
     @BindView(R.id.tab_layout)
     TabLayout mSongTabLayout;
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
     @BindView(R.id.imgeview_swich_state)
     FloatingActionButton mFloatingSwitchListGrid;
-    private int mViewState = STATE_GRID;
-    private VideoPagerAdapter mSongPagerAdapter;
     @BindView(R.id.searchview)
     SearchView mSearchView;
+    private int mViewState = STATE_GRID;
+    private VideoPagerAdapter mSongPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     public void onClick() {
         mViewState = mViewState == STATE_LIST ? VideoAdapter.STATE_GRID : VideoAdapter
             .STATE_LIST;
-        mSongPagerAdapter.switchState(mViewState);
+          mSongPagerAdapter.switchState(mViewState);
         setImageState(mViewState);
     }
 
@@ -71,6 +70,18 @@ public class MainActivity extends AppCompatActivity
         mSongPagerAdapter.setKeySearch(newText);
         mViewPager.getAdapter().notifyDataSetChanged();
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE,mViewState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mViewState = savedInstanceState.getInt(STATE);
     }
 }
 

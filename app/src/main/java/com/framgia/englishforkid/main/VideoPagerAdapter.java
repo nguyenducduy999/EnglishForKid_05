@@ -1,4 +1,4 @@
-package com.framgia.englishforkid.ui.adapter;
+package com.framgia.englishforkid.main;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.framgia.englishforkid.R;
 import com.framgia.englishforkid.data.local.DataHelper;
-import com.framgia.englishforkid.ui.fragment.VideoFragment;
 
 /**
  * Created by duynguyenduc on 17/01/2017.
@@ -15,8 +14,8 @@ import com.framgia.englishforkid.ui.fragment.VideoFragment;
 public class VideoPagerAdapter extends FragmentStatePagerAdapter {
     public static final int POSITON_SONGS = 0;
     public static final int POSITON_SHORT_STORY = 1;
-    public VideoFragment mSongFragment;
-    public VideoFragment mStoryFragment;
+    public VideosFragment mSongFragment;
+    public VideosFragment mStoryFragment;
     private String[] mTitle;
     private String mKeySearch;
 
@@ -24,9 +23,9 @@ public class VideoPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         mTitle = context.getResources().getStringArray(R.array.title_array);
         mSongFragment =
-            VideoFragment.newInstance(DataHelper.TYPE_SONG);
+            VideosFragment.newInstance(DataHelper.TYPE_SONG);
         mStoryFragment =
-            VideoFragment.newInstance(DataHelper.TYPE_STORY);
+            VideosFragment.newInstance(DataHelper.TYPE_STORY);
     }
 
     public void switchState(int viewType) {
@@ -58,7 +57,7 @@ public class VideoPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        VideoFragment fragment = (VideoFragment) object;
+        VideosFragment fragment = (VideosFragment) object;
         if (fragment != null) {
             fragment.onUpdate(mKeySearch);
         }

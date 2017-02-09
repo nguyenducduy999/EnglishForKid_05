@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 
 import com.framgia.englishforkid.data.model.DataObject;
 
@@ -136,6 +137,8 @@ public class DataRepository implements RepositoryContract {
     }
 
     public List<DataObject> getDataFromProvider(int types) {
+        List<DataObject> listData = null;
+        String title, urlVideo, urlImg, id;
         Cursor cursor = mContext.getContentResolver()
             .query(EnglishForKidProvider
                 .CONTENT_URI, null, FIELD_TYPE + "=" + types, null, null);
@@ -204,7 +207,7 @@ public class DataRepository implements RepositoryContract {
     }
 
     @Override
-    public List<DataObject> getRandomData(int types, String videoId) {
+    public List<DataObject> getRandomData(int types, int videoId) {
         List<DataObject> listData = null;
         String title, urlVideo, urlImg;
         int id;
@@ -214,19 +217,7 @@ public class DataRepository implements RepositoryContract {
                 FIELD_TYPE + "=" + types + " and " + FIELD_ID + "!=" + videoId,
                 null,
                 "RANDOM() LIMIT " + COUNT_RANDOM_VIDEO);
-        if (cursor == null) return null;
-        if (cursor.moveToFirst()) {
-            listData = new ArrayList<>();
-            do {
-                id = cursor.getInt(cursor.getColumnIndex(FIELD_ID));
-                title = cursor.getString(cursor.getColumnIndex(FIELD_TITLE));
-                urlVideo = cursor.getString(cursor.getColumnIndex(FIELD_URL_PAGE_VIDEO));
-                urlImg = cursor.getString(cursor.getColumnIndex(FIELD_URL_IMG));
-                listData.add(new DataObject(id, title, urlImg, urlVideo, types));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return listData;
+        return convertCursorToList(cursor, types);
     }
 
     /**
@@ -297,11 +288,12 @@ public class DataRepository implements RepositoryContract {
     }
 
     @Override
-    public boolean checkExistFile(String directory) {
-        if (directory != null) {
-            File file = new File(directory);
-            if (file.isFile())
-                return true;
+    public boolean checkExistFile(String fileName) {
+        if (fileName != null) {
+            File file = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                fileName);
+            return file.isFile();
         }
         return false;
     }

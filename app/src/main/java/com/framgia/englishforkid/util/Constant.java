@@ -12,6 +12,7 @@ public class Constant {
     public final static int COUNT_RANDOM_VIDEO = 10;
     public final static String URL_VIDEO_BASE = "http://www.viddler.com/file/%s/html5";
     public final static String DOWNLOAD_DIRECTORY = Environment.getExternalStoragePublicDirectory
-        (Environment.DIRECTORY_DOWNLOADS).getPath().concat("/");
+        (Environment.DIRECTORY_DOWNLOADS).getPath();
+    public final static int REQUEST_WRITE_PERMISION = 1;
 }
 

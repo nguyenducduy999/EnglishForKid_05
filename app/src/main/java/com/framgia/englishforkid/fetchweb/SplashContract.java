@@ -7,14 +7,15 @@ import com.framgia.englishforkid.BaseView;
  * Created by beepi on 19/01/2017.
  */
 public interface SplashContract {
-    public interface View extends BaseView {
+    interface View extends BaseView {
+        void notifyUseDataLocal();
+        void initSubcribe();
         void startMainActivity();
         void showTryConnection();
-        void notifyUseDataLocal();
     }
 
-    public interface Presenter extends BasePresenter {
-
+    interface Presenter extends BasePresenter {
+        void notifyError();
     }
 }
 

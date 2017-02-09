@@ -1,11 +1,20 @@
 package com.framgia.englishforkid.videoview;
 
+import android.Manifest;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,19 +28,23 @@ import android.widget.VideoView;
 import com.framgia.englishforkid.R;
 import com.framgia.englishforkid.data.local.DataRepository;
 import com.framgia.englishforkid.data.model.DataObject;
-import com.framgia.englishforkid.ui.adapter.VideoAdapter;
+import com.framgia.englishforkid.main.VideoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.framgia.englishforkid.util.Constant.REQUEST_WRITE_PERMISION;
+
 public class PlayVideoActivity extends AppCompatActivity
-    implements VideoAdapter.OnItemClickListenner, VideoContract.View,
+    implements VideoAdapter.OnItemClickListenner, PlayVideoContract.View,
     MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener, View.OnClickListener {
-    final static String EXTRA_VIDEO = "EXTRA_VIDEO";
+    private final static String EXTRA_VIDEO = "EXTRA_VIDEO";
+    private final String TAG = this.getClass().getSimpleName();
     @BindView(R.id.recycle_random_video)
     public RecyclerView mRecyclerRandomVideo;
     @BindView(R.id.video_view)
@@ -42,12 +55,23 @@ public class PlayVideoActivity extends AppCompatActivity
     ImageButton mImageButtonFullScreen;
     @BindView(R.id.image_exit_full_screen)
     ImageButton mImageButtonExitFullScreen;
+    @BindView(R.id.image_download)
+    ImageButton mImageButtonDownload;
     private VideoAdapter mVideoAdapter;
     private List<DataObject> mListRandomVideo;
     private DataObject mVideo;
     private MediaController mMediaController;
-    private VideoPresenter mPresenter;
+    private PlayVideoPresenter mPresenter;
     private int currentPosition = 0;
+    private BroadcastReceiver mReceiverDownLoad = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                showSuccessfulDownload();
+            }
+        }
+    };
 
     public static Intent getPlayVideoIntent(Context context, DataObject video) {
         Intent intent = new Intent(context, PlayVideoActivity.class);
@@ -60,27 +84,22 @@ public class PlayVideoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
         ButterKnife.bind(this);
+        mVideo = (DataObject) getIntent().getExtras().getSerializable(EXTRA_VIDEO);
         initPresenter();
-        initViews();
+        initView();
     }
 
     @Override
     public void onClick(DataObject videoModel) {
-        //TODO play this video
+        mPresenter.setDataVideo(videoModel);
+        mVideoView.stopPlayback();
+        mProgressBar.setVisibility(View.VISIBLE);
+        mPresenter.onPrepareVideo();
+        getRandomVideo();
     }
 
-    private List<DataObject> addData() {
-        mVideo = (DataObject) getIntent().getExtras().getSerializable(EXTRA_VIDEO);
-//        List data =
-//            new DataRepository(this).getRandomData(mVideo.getType(), mVideo.getId());
-//        mListRandomVideo.clear();
-//        mListRandomVideo.addAll(data);
-//        mVideoAdapter.notifyDataSetChanged();
-        mPresenter.setDataVideo(mVideo);
-        return null;
-    }
-
-    public void initViews() {
+    @Override
+    public void initView() {
         mListRandomVideo = new ArrayList<>();
         mVideoAdapter = new VideoAdapter(this, mListRandomVideo, VideoAdapter.STATE_LIST, this);
         mRecyclerRandomVideo.setAdapter(mVideoAdapter);
@@ -90,13 +109,22 @@ public class PlayVideoActivity extends AppCompatActivity
         mImageButtonExitFullScreen.setOnClickListener(this);
         mMediaController = new MediaController(this);
         mVideoView.setOnPreparedListener(this);
-        addData();
+        getRandomVideo();
+        registerReceiver(mReceiverDownLoad, new IntentFilter(
+            DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @OnClick(R.id.image_download)
+    public void onDownload(View view) {
+        showStartDownload();
+        mPresenter.startDownload();
     }
 
     @Override
     public void initPresenter() {
         mPresenter =
-            new VideoPresenter(this, new DataRepository(this), new CompositeSubscription());
+            new PlayVideoPresenter(this, new DataRepository(this), new CompositeSubscription(),
+                com.framgia.englishforkid.videoview.ConnectivityManager.getInstance(this));
     }
 
     @Override
@@ -126,12 +154,14 @@ public class PlayVideoActivity extends AppCompatActivity
     public void onSetOrientationPortrait() {
         mImageButtonFullScreen.setVisibility(View.VISIBLE);
         mImageButtonExitFullScreen.setVisibility(View.GONE);
+        mRecyclerRandomVideo.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onSetOrientationLandscape() {
         mImageButtonFullScreen.setVisibility(View.GONE);
         mImageButtonExitFullScreen.setVisibility(View.VISIBLE);
+        mRecyclerRandomVideo.setVisibility(View.GONE);
     }
 
     @Override
@@ -153,6 +183,7 @@ public class PlayVideoActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubcribe();
+        unregisterReceiver(mReceiverDownLoad);
     }
 
     @Override
@@ -167,7 +198,6 @@ public class PlayVideoActivity extends AppCompatActivity
         mPresenter.onPrepareVideo();
     }
 
-    // change direct phone
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -190,9 +220,6 @@ public class PlayVideoActivity extends AppCompatActivity
             case R.id.image_exit_full_screen:
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 break;
-            case R.id.image_download:
-                // todo download video
-                break;
             default:
                 break;
         }
@@ -206,5 +233,78 @@ public class PlayVideoActivity extends AppCompatActivity
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             onSetOrientationPortrait();
         }
+    }
+
+    @Override
+    public void getRandomVideo() {
+        mPresenter.setDataVideo(mVideo);
+        mListRandomVideo = new ArrayList<>();
+        mVideoAdapter = new VideoAdapter(this, mListRandomVideo, VideoAdapter.STATE_LIST, this);
+        mRecyclerRandomVideo.setAdapter(mVideoAdapter);
+        mRecyclerRandomVideo
+            .setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        List data = mPresenter.getRandomData();
+        mListRandomVideo.clear();
+        mListRandomVideo.addAll(data);
+        mVideoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showConfirmDialog() {
+        new AlertDialog.Builder(this).setTitle(R.string.title_dialog)
+            .setMessage(R.string.msg_infor)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(PlayVideoActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_PERMISION);
+                }
+            })
+            .setNegativeButton(android.R.string.no, null)
+            .create()
+            .show();
+    }
+
+    @Override
+    public void showErrorDownload() {
+        Toast.makeText(PlayVideoActivity.this, R.string.error_fail
+            , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSuccessfulDownload() {
+        Toast.makeText(PlayVideoActivity.this, R.string.msg_done
+            , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showStartDownload() {
+        Toast.makeText(PlayVideoActivity.this, R.string.msg_start_download
+            , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showExistFileDownload() {
+        Toast.makeText(PlayVideoActivity.this, R.string.msg_exist_file
+            , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission
+            .WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                PlayVideoActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                showConfirmDialog();
+            } else {
+                ActivityCompat.requestPermissions(PlayVideoActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_PERMISION);
+            }
+        } else return true;
+        return false;
     }
 }

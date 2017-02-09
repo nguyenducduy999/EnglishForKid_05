@@ -22,7 +22,7 @@ public interface RepositoryContract {
     List<DataObject> getSearchingData(String querry, int type);
     List<DataObject> convertCursorToList(Cursor cursor, int type);
     boolean checkAvailableData();
-    List<DataObject> getRandomData(int types, String videoId);
+    List<DataObject> getRandomData(int types, int videoId);
     String getIdVideo(DataObject video);
     Observable<String> getIdVideoObservable(DataObject data);
     int updateUrlVideo(DataObject dataObject);
