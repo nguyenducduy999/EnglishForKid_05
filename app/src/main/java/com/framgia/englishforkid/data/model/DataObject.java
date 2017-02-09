@@ -5,25 +5,26 @@ import java.io.Serializable;
 /**
  * Created by beepi on 19/01/2017.
  */
-public class DataObject implements Serializable{
-    private String mId;
+public class DataObject implements Serializable {
+    private int mId;
     private String mTitle;
     private String mUrlImage;
+    private String mUrlVideoPage;
     private String mUrlVideo;
     private int mType;
 
-    public DataObject(String id, String title, String urlImage, String urlVideo, int type) {
+    public DataObject(int id, String title, String urlImage, String urlVideoPage, int type) {
         mTitle = title;
         mUrlImage = urlImage;
-        mUrlVideo = urlVideo;
+        mUrlVideoPage = urlVideoPage;
         mType = type;
         mId = id;
     }
 
-    public DataObject(String title, String urlImage, String urlVideo, int type) {
+    public DataObject(String title, String urlImage, String urlVideoPage, int type) {
         mTitle = title;
         mUrlImage = urlImage;
-        mUrlVideo = urlVideo;
+        mUrlVideoPage = urlVideoPage;
         mType = type;
     }
 
@@ -43,12 +44,12 @@ public class DataObject implements Serializable{
         mUrlImage = urlImage;
     }
 
-    public String getUrlVideo() {
-        return mUrlVideo;
+    public String getUrlVideoPage() {
+        return mUrlVideoPage;
     }
 
-    public void setUrlVideo(String urlVideo) {
-        mUrlVideo = urlVideo;
+    public void setUrlVideoPage(String urlVideoPage) {
+        mUrlVideoPage = urlVideoPage;
     }
 
     public int getType() {
@@ -59,11 +60,19 @@ public class DataObject implements Serializable{
         mType = type;
     }
 
-    public String getId() {
+    public int getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         mId = id;
+    }
+
+    public String getUrlVideo() {
+        return mUrlVideo;
+    }
+
+    public void setUrlVideo(String urlVideo) {
+        mUrlVideo = urlVideo;
     }
 }

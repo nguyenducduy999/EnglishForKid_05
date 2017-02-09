@@ -1,5 +1,6 @@
 package com.framgia.englishforkid.data.local;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -22,4 +23,10 @@ public interface RepositoryContract {
     List<DataObject> convertCursorToList(Cursor cursor, int type);
     boolean checkAvailableData();
     List<DataObject> getRandomData(int types, String videoId);
+    String getIdVideo(DataObject video);
+    Observable<String> getIdVideoObservable(DataObject data);
+    int updateUrlVideo(DataObject dataObject);
+    ContentValues convertObject(DataObject video);
+    String getUrlVideoLocal(DataObject video);
+    boolean checkExistFile(String directory);
 }

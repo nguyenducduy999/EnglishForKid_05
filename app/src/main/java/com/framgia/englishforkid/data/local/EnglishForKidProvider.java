@@ -22,7 +22,7 @@ public class EnglishForKidProvider extends ContentProvider {
     public static final int URI_CODE_ID = 2;
     public static final UriMatcher sUriMatcher;
     static final String DATABASE_NAME = "English_For_Kid";
-    static final int DATABASE_VERSION = 7;
+    static final int DATABASE_VERSION = 10;
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(PROVIDER_NAME, "datas", URI_CODE);
